@@ -4,6 +4,12 @@ class Board {
   public Board() {
     grid = new Piece[4][4];
   }
+  
+  public boolean play(Piece piece, int r, int c){
+    if(grid[r][c] != null) return false;
+    grid[r][c] = piece;
+    return true;
+  }
 
   public boolean gameOver() {
     for (Piece[] row : grid) {
