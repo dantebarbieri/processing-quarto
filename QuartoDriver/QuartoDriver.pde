@@ -1,10 +1,9 @@
-Tile[][] board;
+Board board;
 
-void setup(){
+void setup() {
   fullScreen();
   noCursor();
 }
 
-void draw(){
-  
+void draw() {
 }
