@@ -1,13 +1,13 @@
 class Board {
-  private Piece[][] grid;
+  private Tile[][] grid;
 
   public Board() {
-    grid = new Piece[4][4];
+    grid = new Tile[4][4];
   }
   
   public boolean play(Piece piece, int r, int c){
-    if(grid[r][c] != null) return false;
-    grid[r][c] = piece;
+    if(grid[r][c].piece != null) return false;
+    grid[r][c].piece = piece;
     return true;
   }
 

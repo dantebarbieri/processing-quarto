@@ -26,4 +26,17 @@ class Piece {
     boolean[] comparison = {t, r, d, h};
     return comparison;
   }
+  
+  public void show(float x, float y, float r){
+    if(this.dark){
+      fill(26, 26, 26);
+    }else{
+      fill(229, 229, 229);
+    }
+    if(this.round){
+      ellipse(x + r, y + r, r, r);
+    }else{
+      rect(x + r, y + r, r, r);
+    }
+  }
 }
