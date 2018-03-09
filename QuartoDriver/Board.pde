@@ -12,13 +12,14 @@ class Board {
   }
 
   public boolean gameOver() {
-    for (Piece[] row : grid) {
+    for (Tile[] row : grid) {
       boolean full = true;
-      for (Piece piece : row) {
-        if (piece == null) full = false;
+      for (Tile tile : row) {
+        if (tile.piece == null) full = false;
       }
       if (full) {
-        boolean[] comparison = row[0].compareToMultiple(row);
+        Piece[] pieces = {row[1].piece, row[2].piece, row[3].piece};
+        boolean[] comparison = row[0].piece.compareToMultiple(pieces);
         for (boolean element : comparison) {
           if (element) {
             return true;
@@ -29,11 +30,11 @@ class Board {
     for (int i = 0; i < grid[0].length; i++) {
       boolean full = true;
       for (int j = 0; j < grid.length; j++) {
-        if (grid[j][i] == null) full = false;
+        if (grid[j][i].piece == null) full = false;
       }
       if (full) {
-        Piece[] col = {grid[0][i], grid[1][i], grid[2][i], grid[3][i]};
-        boolean[] comparison = grid[0][i].compareToMultiple(col);
+        Piece[] pieces = {grid[1][i].piece, grid[2][i].piece, grid[3][i].piece};
+        boolean[] comparison = grid[0][i].piece.compareToMultiple(pieces);
         for (boolean element : comparison) {
           if (element) {
             return true;
@@ -43,11 +44,11 @@ class Board {
     }
     boolean full = true;
     for (int i = 0; i < (grid.length + grid[0].length) / 2; i++) {
-      if (grid[i][i] == null) full = false;
+      if (grid[i][i].piece == null) full = false;
     }
     if (full) {
-      Piece[] diag = {grid[0][0], grid[1][1], grid[2][2], grid[3][3]};
-      boolean[] comparison = grid[0][0].compareToMultiple(diag);
+      Piece[] pieces = {grid[1][1].piece, grid[2][2].piece, grid[3][3].piece};
+      boolean[] comparison = grid[0][0].piece.compareToMultiple(pieces);
       for (boolean element : comparison) {
         if (element) {
           return true;
@@ -56,11 +57,11 @@ class Board {
     }
     full = true;
     for (int i = 0; i < (grid.length + grid[0].length) / 2; i++) {
-      if (grid[i][3-i] == null) full = false;
+      if (grid[i][3-i].piece == null) full = false;
     }
     if (full) {
-      Piece[] diag = {grid[0][3], grid[1][2], grid[2][1], grid[3][0]};
-      boolean[] comparison = grid[0][3].compareToMultiple(diag);
+      Piece[] pieces = {grid[1][2].piece, grid[2][1].piece, grid[3][0].piece};
+      boolean[] comparison = grid[0][3].piece.compareToMultiple(pieces);
       for (boolean element : comparison) {
         if (element) {
           return true;
