@@ -2,6 +2,7 @@ Piece[] pieces;
 Board board;
 Piece selected;
 boolean turn, over;
+float rpos, gpos, bpos;
 
 void setup() {
   fullScreen();
@@ -35,26 +36,49 @@ void setup() {
   turn = false;
   over = false;
   selected.setPlayed(true);
+  rpos = random(10000);
+  gpos = random(10000);
+  bpos = random(10000);
 }
 
 void draw() {
   if (!over) {
-    background(0);
+    background(255 * noise(rpos), 255 * noise(gpos), 255 * noise(bpos));
     board.show();
+    //fill(51, 35, 0);
+    //rect(41 * height / 80, height / 2, 9 * height / 10, 9 * height / 10);
     for (Piece piece : pieces) {
       piece.show();
     }
     selected.show();
+    textSize(height / 10);
+    fill(255 * (1 - noise(rpos)), 255 * (1 - noise(gpos)), 255 * (1 - noise(bpos)));
     if (board.gameOver()) {
-      textSize(height / 10);
       if (turn) {
         text("Player 1 Wins!", 3 * width / 4, 3 * height / 4);
       } else {
         text("Player 2 Wins!", 3 * width / 4, 3 * height / 4);
       }
       over = true;
+    } else {
+      if (selected.getSelection()) {
+        if (turn) {
+          text("Player 2 Move", 3 * width / 4, 3 * height / 4);
+        } else {
+          text("Player 1 Move", 3 * width / 4, 3 * height / 4);
+        }
+      } else {
+        if (turn) {
+          text("Player 1 Select", 3 * width / 4, 3 * height / 4);
+        } else {
+          text("Player 2 Select", 3 * width / 4, 3 * height / 4);
+        }
+      }
     }
   }
+  rpos += 0.01;
+  gpos += 0.01;
+  bpos += 0.01;
 }
 
 void keyTyped() {
@@ -65,6 +89,7 @@ void keyTyped() {
 }
 
 void mousePressed() {
+  boolean play = false;
 Playing:
   if (selected.getSelection()) {
     for (int i = 0; i < board.grid.length; i++) {
@@ -78,6 +103,7 @@ Playing:
             }
           }
           turn = !turn;
+          play = true;
           break Playing;
         }
       }

@@ -56,11 +56,11 @@ class Piece {
     this.played = b;
     return ret;
   }
-  
+
   public boolean getSelection() {
     return selection;
   }
-  
+
   public boolean setSelection(boolean b) {
     boolean ret = this.selection == b;
     this.selection = b;
@@ -70,7 +70,7 @@ class Piece {
   public boolean equals(Piece other) {
     boolean[] comparison = this.compareTo(other);
     for (boolean element : comparison) {
-      if (element) {
+      if (!element) {
         return false;
       }
     }
@@ -120,5 +120,32 @@ class Piece {
         text("S", x, y + r / 5);
       }
     }
+  }
+
+  @Override
+    public String toString() {
+    String ret = "";
+    if (this.dark) {
+      ret += "dark  ";
+    } else {
+      ret += "light ";
+    }
+    if (this.round) {
+      ret += "round  ";
+    } else {
+      ret += "square ";
+    }
+    if (this.holed) {
+      ret += "holed ";
+    }else{
+      ret += "solid ";
+    }
+    if (this.tall) {
+      ret += "tall  ";
+    } else {
+      ret += "small ";
+    }
+    ret += x + " " + y + " " + r;
+    return ret;
   }
 }
