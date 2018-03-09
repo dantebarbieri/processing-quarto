@@ -1,13 +1,35 @@
 class Piece {
-  private boolean played, tall, round, dark, holed;
-  private float x, y, r;
+  private boolean selection, played, tall, round, dark, holed;
+  public float x, y, r;
+
+  public Piece(Piece piece) {
+    selection = piece.selection;
+    played = piece.played;
+    tall = piece.tall;
+    round = piece.round;
+    dark = piece.dark;
+    holed = piece.holed;
+  }
 
   public Piece(boolean t, boolean r, boolean d, boolean h, float x, float y, float rad) {
+    selection = true;
     played = false;
     tall = t;
     round = r;
     dark = d;
     holed = h;
+    this.x = x;
+    this.y = y;
+    this.r = rad;
+  }
+
+  public Piece(boolean s, float x, float y, float rad) {
+    selection = s;
+    played = false;
+    tall = false;
+    round = false;
+    dark = false;
+    holed = false;
     this.x = x;
     this.y = y;
     this.r = rad;
@@ -19,9 +41,9 @@ class Piece {
 
   public boolean clicked() {
     if (this.round) {
-      return Math.hypot(mouseX - x, mouseY - y) < r;
-    }else{
-      return x < mouseX && mouseX < x + r && y < mouseY && mouseY < y + r;
+      return Math.hypot(mouseX - x, mouseY - y) < r / 2;
+    } else {
+      return x - r / 2 < mouseX && mouseX < x + r / 2 && y - r / 2 < mouseY && mouseY < y + r / 2;
     }
   }
 
@@ -33,6 +55,26 @@ class Piece {
     boolean ret = this.played == b;
     this.played = b;
     return ret;
+  }
+  
+  public boolean getSelection() {
+    return selection;
+  }
+  
+  public boolean setSelection(boolean b) {
+    boolean ret = this.selection == b;
+    this.selection = b;
+    return ret;
+  }
+
+  public boolean equals(Piece other) {
+    boolean[] comparison = this.compareTo(other);
+    for (boolean element : comparison) {
+      if (element) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public boolean[] compareTo(Piece other) {
@@ -54,27 +96,29 @@ class Piece {
     return comparison;
   }
 
-  public void show(float x, float y, float r) {
-    if (this.dark) {
-      fill(51, 32, 0);
-    } else {
-      fill(229, 180, 135);
-    }
-    if (this.round) {
-      ellipse(x, y, r, r);
-    } else {
-      rect(x, y, r, r);
-    }
-    if (this.holed) {
-      fill(26, 26, 26);
-      ellipse(x, y, r / 2, r / 2);
-    }
-    fill(180, 180, 180);
-    textSize(r / 2);
-    if (this.tall) {
-      text("T", x, y);
-    } else {
-      text("S", x, y);
+  public void show() {
+    if (selection) {
+      if (this.dark) {
+        fill(51, 32, 0);
+      } else {
+        fill(229, 219, 209);
+      }
+      if (this.round) {
+        ellipse(x, y, r, r);
+      } else {
+        rect(x, y, r, r);
+      }
+      if (this.holed) {
+        fill(26, 26, 26);
+        ellipse(x, y, r / 2, r / 2);
+      }
+      fill(180, 180, 180);
+      textSize(r / 2);
+      if (this.tall) {
+        text("T", x, y + r / 5);
+      } else {
+        text("S", x, y + r / 5);
+      }
     }
   }
 }

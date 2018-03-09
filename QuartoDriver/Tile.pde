@@ -17,15 +17,15 @@ class Tile{
   }
   
   public boolean clicked(){
-    return Math.hypot(mouseX - x, mouseY - y) < d;
+    return Math.hypot(mouseX - x, mouseY - y) < d / 2;
   }
   
   public void show(){
-    fill(26, 13, 0);
+    fill(77, 65, 50);
     stroke(150, 150, 150);
     ellipse(x, y, d, d);
     if(this.piece != null){
-      this.piece.show(x, y, d / 2f);
+      this.piece.show();
     }
   }
 }

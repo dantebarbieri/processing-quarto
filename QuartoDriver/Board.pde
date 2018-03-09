@@ -1,27 +1,32 @@
 class Board {
-  private Tile[][] grid;
+  public Tile[][] grid;
 
   public Board() {
     grid = new Tile[4][4];
     float r = 9 * height / 40;
-    float x = 9 * height / 10 + r / 2;
-    float y = 9 * height / 10 + r / 2;
+    float x = 41 * height / 80 - 2 * r + r / 2;
+    float y = height / 2 - 2 * r + r / 2;
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
-        grid[i][j] = new Tile(x + j * r, y + i * r, r);
+        grid[i][j] = new Tile(x + j * r, y + i * r, 9 * r / 10);
       }
     }
   }
 
   public boolean play(Piece piece, int r, int c) {
     if (grid[r][c].piece != null) return false;
-    grid[r][c].piece = piece;
+    Piece move = new Piece(piece);
+    move.x = grid[r][c].x;
+    move.y = grid[r][c].y;
+    move.r = grid[r][c].d / 2;
+    move.selection = true;
+    grid[r][c].piece = move;
     return true;
   }
 
   public void show() {
-    fill(13, 7, 0);
-    rect(9 * height / 10, height / 2, 9 * height / 10, 9 * height / 10);
+    fill(51, 35, 0);
+    rect(41 * height / 80, height / 2, 9 * height / 10, 9 * height / 10);
     for (Tile[] row : grid) {
       for (Tile tile : row) {
         tile.show();
