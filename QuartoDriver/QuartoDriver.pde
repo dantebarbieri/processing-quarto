@@ -1,7 +1,7 @@
 Piece[] pieces;
 Board board;
 Piece selected;
-boolean turn;
+boolean turn, over;
 
 void setup() {
   fullScreen();
@@ -33,15 +33,35 @@ void setup() {
   board = new Board();
   selected = new Piece(false, 8 * width / 9, 8 * height / 9, height / 6);
   turn = false;
+  over = false;
+  selected.setPlayed(true);
 }
 
 void draw() {
-  background(0);
-  board.show();
-  for (Piece piece : pieces) {
-    piece.show();
+  if (!over) {
+    background(0);
+    board.show();
+    for (Piece piece : pieces) {
+      piece.show();
+    }
+    selected.show();
+    if (board.gameOver()) {
+      textSize(height / 10);
+      if (turn) {
+        text("Player 1 Wins!", 3 * width / 4, 3 * height / 4);
+      } else {
+        text("Player 2 Wins!", 3 * width / 4, 3 * height / 4);
+      }
+      over = true;
+    }
   }
-  selected.show();
+}
+
+void keyTyped() {
+  if (key == 'r' || key == 'R') {
+    setup();
+    draw();
+  }
 }
 
 void mousePressed() {
@@ -54,10 +74,10 @@ Playing:
           selected.setSelection(false);
           for (int k = 0; k < pieces.length; k++) {
             if (pieces[k].equals(selected)) {
-              pieces[k].played = true;
+              pieces[k].setPlayed(true);
             }
           }
-          selected.played = true;
+          turn = !turn;
           break Playing;
         }
       }
@@ -75,7 +95,7 @@ Deselecting:
   }
 Selecting:
   for (int i = 0; i < pieces.length; i++) {
-    if (!pieces[i].played && pieces[i].clicked()) {
+    if (!pieces[i].getPlayed() && pieces[i].clicked()) {
       selected = pieces[i].copyAttributes(selected.x, selected.y, selected.r);
       selected.setSelection(true);
       pieces[i].setSelection(false);
