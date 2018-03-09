@@ -40,10 +40,18 @@ class Piece {
   }
 
   public boolean clicked() {
-    if (this.round) {
-      return Math.hypot(mouseX - x, mouseY - y) < r / 2;
+    if (this.tall) {
+      if (this.round) {
+        return Math.hypot(mouseX - x, mouseY - y) < r / 2 || Math.hypot(mouseX - (x - r / 10), mouseY - (y + r/ 10)) < r / 2;
+      } else {
+        return (x - r / 2 < mouseX && mouseX < x + r / 2 && y - r / 2 < mouseY && mouseY < y + r / 2) || ((x - r / 10) - r / 2 < mouseX && mouseX < (x - r / 10) + r / 2 && (y + r / 10) - r / 2 < mouseY && mouseY < (y + r / 10) + r / 2);
+      }
     } else {
-      return x - r / 2 < mouseX && mouseX < x + r / 2 && y - r / 2 < mouseY && mouseY < y + r / 2;
+      if (this.round) {
+        return Math.hypot(mouseX - x, mouseY - y) < r / 2;
+      } else {
+        return x - r / 2 < mouseX && mouseX < x + r / 2 && y - r / 2 < mouseY && mouseY < y + r / 2;
+      }
     }
   }
 

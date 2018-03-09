@@ -45,8 +45,7 @@ void draw() {
   if (!over) {
     background(255 * noise(rpos), 255 * noise(gpos), 255 * noise(bpos));
     board.show();
-    //fill(51, 35, 0);
-    //rect(41 * height / 80, height / 2, 9 * height / 10, 9 * height / 10);
+    drawPieceMat();
     for (Piece piece : pieces) {
       piece.show();
     }
@@ -83,6 +82,13 @@ void draw() {
   rpos += 0.01;
   gpos += 0.01;
   bpos += 0.01;
+}
+
+void drawPieceMat() {
+  fill(55, 0, 0);
+  float x = 2 * width / 3 + 3 * height / 14;
+  float y = height / 10 + 3 * height / 14;
+  rect(x, y, 17 * height / 28, 17 * height / 28);
 }
 
 void keyTyped() {

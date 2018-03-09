@@ -25,7 +25,7 @@ class Board {
   }
 
   public void show() {
-    fill(51, 35, 0);
+    fill(35, 51, 0);
     rect(41 * height / 80, height / 2, 9 * height / 10, 9 * height / 10);
     for (Tile[] row : grid) {
       for (Tile tile : row) {

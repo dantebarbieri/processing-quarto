@@ -21,7 +21,7 @@ class Tile{
   }
   
   public void show(){
-    fill(77, 65, 50);
+    fill(65, 77, 50);
     stroke(150, 150, 150);
     ellipse(x, y, d, d);
     if(this.piece != null){
