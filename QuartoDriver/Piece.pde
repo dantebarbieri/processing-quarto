@@ -103,6 +103,13 @@ class Piece {
       } else {
         fill(229, 219, 209);
       }
+      if (this.tall) {
+        if (this.round) {
+          ellipse(x - r / 10, y + r / 10, r, r);
+        } else {
+          rect(x - r / 10, y + r / 10, r, r);
+        }
+      }
       if (this.round) {
         ellipse(x, y, r, r);
       } else {
@@ -111,13 +118,6 @@ class Piece {
       if (this.holed) {
         fill(26, 26, 26);
         ellipse(x, y, r / 2, r / 2);
-      }
-      fill(180, 180, 180);
-      textSize(r / 2);
-      if (this.tall) {
-        text("T", x, y + r / 5);
-      } else {
-        text("S", x, y + r / 5);
       }
     }
   }
@@ -137,7 +137,7 @@ class Piece {
     }
     if (this.holed) {
       ret += "holed ";
-    }else{
+    } else {
       ret += "solid ";
     }
     if (this.tall) {

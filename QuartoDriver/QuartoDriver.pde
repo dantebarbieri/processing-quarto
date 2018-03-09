@@ -54,12 +54,16 @@ void draw() {
     textSize(height / 10);
     fill(255 * (1 - noise(rpos)), 255 * (1 - noise(gpos)), 255 * (1 - noise(bpos)));
     if (board.gameOver()) {
-      if (turn) {
-        text("Player 1 Wins!", 3 * width / 4, 3 * height / 4);
+      if (board.tieGame()) {
+        text("Tie Game!", 3 * width / 4, 3 * height / 4);
       } else {
-        text("Player 2 Wins!", 3 * width / 4, 3 * height / 4);
+        if (turn) {
+          text("Player 1 Wins!", 3 * width / 4, 3 * height / 4);
+        } else {
+          text("Player 2 Wins!", 3 * width / 4, 3 * height / 4);
+        }
+        over = true;
       }
-      over = true;
     } else {
       if (selected.getSelection()) {
         if (turn) {

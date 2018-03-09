@@ -34,6 +34,17 @@ class Board {
     }
   }
 
+  public boolean tieGame() {
+    for (Tile[] row : grid) {
+      for (Tile tile : row) {
+        if (tile.piece == null) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   public boolean gameOver() {
     for (Tile[] row : grid) {
       boolean full = true; 
