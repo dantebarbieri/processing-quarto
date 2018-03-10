@@ -26,6 +26,8 @@ class Board {
 
   public void show() {
     fill(35, 51, 0);
+    stroke(150, 150, 150);
+    strokeWeight(15);
     rect(41 * height / 80, height / 2, 9 * height / 10, 9 * height / 10);
     for (Tile[] row : grid) {
       for (Tile tile : row) {

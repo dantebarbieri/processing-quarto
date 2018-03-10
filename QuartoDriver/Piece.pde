@@ -32,7 +32,7 @@ class Piece {
     holed = false;
     this.x = x;
     this.y = y;
-    this.r = rad;
+    r = rad;
   }
 
   public Piece copyAttributes(float x, float y, float r) {
@@ -40,14 +40,14 @@ class Piece {
   }
 
   public boolean clicked() {
-    if (this.tall) {
-      if (this.round) {
+    if (tall) {
+      if (round) {
         return Math.hypot(mouseX - x, mouseY - y) < r / 2 || Math.hypot(mouseX - (x - r / 10), mouseY - (y + r/ 10)) < r / 2;
       } else {
         return (x - r / 2 < mouseX && mouseX < x + r / 2 && y - r / 2 < mouseY && mouseY < y + r / 2) || ((x - r / 10) - r / 2 < mouseX && mouseX < (x - r / 10) + r / 2 && (y + r / 10) - r / 2 < mouseY && mouseY < (y + r / 10) + r / 2);
       }
     } else {
-      if (this.round) {
+      if (round) {
         return Math.hypot(mouseX - x, mouseY - y) < r / 2;
       } else {
         return x - r / 2 < mouseX && mouseX < x + r / 2 && y - r / 2 < mouseY && mouseY < y + r / 2;
@@ -60,8 +60,8 @@ class Piece {
   }
 
   public boolean setPlayed(boolean b) {
-    boolean ret = this.played == b;
-    this.played = b;
+    boolean ret = played == b;
+    played = b;
     return ret;
   }
 
@@ -70,13 +70,13 @@ class Piece {
   }
 
   public boolean setSelection(boolean b) {
-    boolean ret = this.selection == b;
-    this.selection = b;
+    boolean ret = selection == b;
+    selection = b;
     return ret;
   }
 
   public boolean equals(Piece other) {
-    boolean[] comparison = this.compareTo(other);
+    boolean[] comparison = compareTo(other);
     for (boolean element : comparison) {
       if (!element) {
         return false;
@@ -86,7 +86,7 @@ class Piece {
   }
 
   public boolean[] compareTo(Piece other) {
-    boolean[] comparison = {this.tall == other.tall, this.round == other.round, this.dark == other.dark, this.holed == other.holed};
+    boolean[] comparison = {tall == other.tall, round == other.round, dark == other.dark, holed == other.holed};
     return comparison;
   }
 
@@ -94,10 +94,10 @@ class Piece {
     boolean t = true, r = true, d = true, h = true;
     int index = 0;
     while (index < others.length && (t || r || d || h)) {//800 IQ Loop
-      t = t && this.tall == others[index].tall;
-      r = r && this.round == others[index].round;
-      d = d && this.dark == others[index].dark;
-      h = h && this.holed == others[index].holed;
+      t = t && tall == others[index].tall;
+      r = r && round == others[index].round;
+      d = d && dark == others[index].dark;
+      h = h && holed == others[index].holed;
       index++;
     }
     boolean[] comparison = {t, r, d, h};
@@ -106,13 +106,13 @@ class Piece {
 
   public void show() {
     if (selection) {
-      if (this.dark) {
+      if (dark) {
         fill(51, 32, 0);
       } else {
         fill(229, 219, 209);
       }
-      if (this.tall) {
-        if (this.round) {
+      if (tall) {
+        if (round) {
           ellipse(x - r / 10, y + r / 10, r, r);
         } else {
           rect(x - r / 10, y + r / 10, r, r);
@@ -121,12 +121,12 @@ class Piece {
           line(x - 6 * r / 10, y + 6 * r / 10, x - r / 2, y + r / 2);
         }
       }
-      if (this.round) {
+      if (round) {
         ellipse(x, y, r, r);
       } else {
         rect(x, y, r, r);
       }
-      if (this.holed) {
+      if (holed) {
         fill(26, 26, 26);
         ellipse(x, y, r / 2, r / 2);
       }
@@ -136,22 +136,22 @@ class Piece {
   @Override
     public String toString() {
     String ret = "";
-    if (this.dark) {
+    if (dark) {
       ret += "dark  ";
     } else {
       ret += "light ";
     }
-    if (this.round) {
+    if (round) {
       ret += "round  ";
     } else {
       ret += "square ";
     }
-    if (this.holed) {
+    if (holed) {
       ret += "holed ";
     } else {
       ret += "solid ";
     }
-    if (this.tall) {
+    if (tall) {
       ret += "tall  ";
     } else {
       ret += "small ";
