@@ -116,6 +116,9 @@ class Piece {
           ellipse(x - r / 10, y + r / 10, r, r);
         } else {
           rect(x - r / 10, y + r / 10, r, r);
+          line(x - 6 * r / 10, y - 4 * r / 10, x - r / 2, y - r / 2);
+          line(x + 4 * r / 10, y + 6 * r / 10, x + r / 2, y + r / 2);
+          line(x - 6 * r / 10, y + 6 * r / 10, x - r / 2, y + r / 2);
         }
       }
       if (this.round) {
