@@ -27,7 +27,7 @@ class Particle {
     rings = new ArrayList<Ring>();
   }
 
-  public void update() {
+  public void update(Primary[] primaries) {
     acc = new PVector(0, 0);
     for (Primary primary : primaries) {
       PVector r = new PVector(primary.pos.x - pos.x, primary.pos.y - pos.y);

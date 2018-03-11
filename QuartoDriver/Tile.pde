@@ -10,9 +10,9 @@ class Tile{
   }
   
   public Tile(float x, float y, float d){
-    x = x;
-    y = y;
-    d = d;
+    this.x = x;
+    this.y = y;
+    this.d = d;
     piece = null;
   }
   
