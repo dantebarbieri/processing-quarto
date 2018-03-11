@@ -112,7 +112,7 @@ class BotGame {
   }
 
   void botMove() {
-    ArrayList<PVector> bestCells = new ArrayList<PVector>();
+    ArrayList<Integer> bestCells = new ArrayList<Integer>();
     int bestCellCost = Integer.MIN_VALUE;
     for (int i = 0; i < board.grid.length; i++) {
       for (int j = 0; j < board.grid[i].length; j++) {
@@ -120,16 +120,17 @@ class BotGame {
           int cellCost = testMove(selected, i, j);
           if (cellCost > bestCellCost) {
             bestCells.clear(); 
-            bestCells.add(new PVector(i, j));
+            bestCells.add(i * board.grid[i].length + j);
             bestCellCost = cellCost;
           } else if (cellCost == bestCellCost) {
-            bestCells.add(new PVector(i, j));
+            bestCells.add(i * board.grid[i].length + j);
           }
         }
       }
     }
-    PVector cellToPlay = bestCells.get((int)random(bestCells.size()));
-    board.play(selected, (int)cellToPlay.x, (int)cellToPlay.y);
+    int cellToPlay = bestCells.get((int)random(bestCells.size()));
+    board.play(selected, cellToPlay / board.grid[0].length, cellToPlay % board.grid[0].length);
+    piece_play[(int)random(piece_play.length)].play();
     selected.setSelection(false);
     for (int i = 0; i < pieces.length; i++) {
       if (pieces[i].equals(selected)) {
@@ -156,6 +157,7 @@ class BotGame {
     }
     int pieceToSelect = bestPieces.get((int)random(bestPieces.size()));
     selected = pieces[pieceToSelect].copyAttributes(selected.x, selected.y, selected.r);
+    piece_selected.play();
     selected.setSelection(true);
     pieces[pieceToSelect].setSelection(false);
   }
@@ -164,7 +166,7 @@ class BotGame {
     int sum = 0;
     for (int i = 0; i < board.grid.length; i++) {
       for (int j = 0; j < board.grid[i].length; j++) {
-        if (board.grid[i][j] == null) sum += testMove(piece, i, j);
+        if (board.grid[i][j].piece == null) sum += testMove(piece, i, j);
       }
     }
     return sum;
@@ -182,22 +184,38 @@ class BotGame {
     boolean[] horizR = new boolean[0], vertiR = new boolean[0], diagfR = new boolean[0], diagbR = new boolean[0];
     if (horiz) {
       Piece[] row = new Piece[3];
-      for (int i = 0; i < board.grid.length; i++) if (i != c) row[i] = board.grid[r][i].piece;
+      int index = 0;
+      for (int i = 0; i < board.grid.length; i++) if (i != c) { 
+        row[index] = board.grid[r][i].piece; 
+        index++;
+      }
       horizR = piece.compareToMultiple(row);
     }
     if (verti) {
       Piece[] col = new Piece[3];
-      for (int i = 0; i < board.grid.length; i++) if (i != r) col[i] = board.grid[i][c].piece;
+      int index = 0;
+      for (int i = 0; i < board.grid.length; i++) if (i != r) { 
+        col[index] = board.grid[i][c].piece; 
+        index++;
+      }
       vertiR = piece.compareToMultiple(col);
     }
     if (diagf) {
       Piece[] diag = new Piece[3];
-      for (int i = 0; i < board.grid.length; i++) if (i != r) diag[i] = board.grid[i][3 - i].piece;
+      int index = 0;
+      for (int i = 0; i < board.grid.length; i++) if (i != r) { 
+        diag[index] = board.grid[i][3 - i].piece; 
+        index++;
+      }
       diagfR = piece.compareToMultiple(diag);
     }
     if (diagb) {
       Piece[] diag = new Piece[3];
-      for (int i = 0; i < board.grid.length; i++) if (i != r) diag[i] = board.grid[i][i].piece;
+      int index = 0;
+      for (int i = 0; i < board.grid.length; i++) if (i != r) { 
+        diag[index] = board.grid[i][i].piece; 
+        index++;
+      }
       diagbR = piece.compareToMultiple(diag);
     }
     int sum = 0;

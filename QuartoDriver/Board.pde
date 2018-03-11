@@ -12,6 +12,15 @@ class Board {
       }
     }
   }
+  
+  public Board(Board other) {
+    grid = new Tile[4][4];
+    for(int i = 0; i < other.grid.length; i++){
+      for(int j = 0; j < other.grid[i].length; j++){
+        grid[i][j] = new Tile(other.grid[i][j]);
+      }
+    }
+  }
 
   public boolean play(Piece piece, int r, int c) {
     if (grid[r][c].piece != null) return false;

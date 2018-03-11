@@ -13,6 +13,9 @@ void setup() {
   startMultiplayer = new Button("Play Multiplayer", new PVector(width / 4, height / 4), 100, #469928, #000000, #469928, #ffffff);
   startBots = new Button("Play Against a Bot", new PVector(width / 4, height / 3), 100, #469928, #000000, #469928, #ffffff);
   startTutorial = new Button("How to Play", new PVector(width / 4, height / 2), 100, #469928, #000000, #469928, #ffffff);
+  easyDiff = new Button("Normal Bot", new PVector(width / 4, height / 4), 100, #469928, #000000, #469928, #ffffff);
+  mediDiff = new Button("Hard Bot", new PVector(width / 4, height / 3), 100, #469928, #000000, #469928, #ffffff);
+  hardDiff = new Button("Potentially Impossible Bot", new PVector(width / 4, height / 2), 100, #469928, #000000, #469928, #ffffff);
 }
 
 void draw() {
@@ -23,17 +26,21 @@ void draw() {
       mpg.process();
     } else if (menu == 2) {
       bots.process();
+    } else if (menu == 3) {
+      drawBotMenu();
     }
   }
 }
 
 void keyTyped() {
-  if (key == 'r' || key == 'R') {
-    rectMode(CORNER);
-    textAlign(LEFT);
-    noStroke();
-    noFill();
-    menu = 0;
+  if (menu == 1 || menu == 2) {
+    if (key == 'r' || key == 'R') {
+      rectMode(CORNER);
+      textAlign(LEFT);
+      noStroke();
+      noFill();
+      menu = 0;
+    }
   }
 }
 
@@ -45,8 +52,7 @@ void mousePressed() {
       menu = 1;
     }
     if (startBots.clicked()) {
-      bots = new BotGame(true, 0); 
-      menu = 2;
+      menu = 3;
     }
     break;
   case 1:
@@ -129,8 +135,8 @@ void mousePressed() {
         }
       }
     }
-  Selecting:
     if (bots.turn != bots.humanFirst) {
+    Selecting:
       for (int i = 0; i < bots.pieces.length; i++) {
         if (!bots.pieces[i].getPlayed() && bots.pieces[i].clicked()) {
           bots.selected = bots.pieces[i].copyAttributes(bots.selected.x, bots.selected.y, bots.selected.r);
@@ -143,14 +149,24 @@ void mousePressed() {
       if (!bots.over) {
         if (play) {
           piece_play[(int)random(piece_play.length)].play();
-        } else {
-          if (select) {
-            piece_selected.play();
-          }
         }
-        break;
       }
+      break;
     }
+  case 3:
+    if (easyDiff.clicked()) {
+      bots = random(1) > 0.5 ? new BotGame(true, 0) : new BotGame(false, 0);
+      menu = 2;
+    }
+    if (mediDiff.clicked()) {
+      bots = random(1) > 0.5 ? new BotGame(true, 1) : new BotGame(false, 1);
+      menu = 2;
+    }
+    if (hardDiff.clicked()) {
+      bots = random(1) > 0.5 ? new BotGame(true, 2) : new BotGame(false, 2);
+      menu = 2;
+    }
+    break;
   }
 }
 
@@ -177,4 +193,11 @@ void drawMenu() {
   startMultiplayer.show();
   startBots.show();
   startTutorial.show();
+}
+
+void drawBotMenu() {
+  background(0);
+  easyDiff.show();
+  mediDiff.show();
+  hardDiff.show();
 }
