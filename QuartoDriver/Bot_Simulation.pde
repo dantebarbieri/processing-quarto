@@ -1,17 +1,16 @@
-import processing.sound.*; //<>//
+import processing.sound.*;
 
-class BotGame {
+class BotSimulation {
   public Piece[] pieces;
   public Board board;
   public Piece selected;
-  public boolean humanFirst, turn, over;
+  public boolean turn, over;
   public Primary[] primaries;
   public Particle[] particles;
-  public int difficulty;
+  public int difficulty, gamesToPlay;
 
-  public BotGame(boolean fm, int diff) {
+  public BotSimulation(int games, int fr, int diff) {
     rectMode(CENTER);
-    textAlign(CENTER);
     float x, y, r;
     x = 2 * width / 3;
     y = height / 10;
@@ -49,7 +48,8 @@ class BotGame {
       particles[i] = new Particle(new PVector(random(width / 5, 4 * width / 5), random(height / 5, 4 * height / 5)), new PVector(random(-10, 10), random(-10, 10)), new PVector(0, 0), random(50, 70));
     }
     difficulty = diff;
-    humanFirst = fm;
+    gamesToPlay = games;
+    frameRate(fr);
   }
 
   public void process() {
@@ -71,35 +71,49 @@ class BotGame {
         piece.show();
       }
       selected.show();
-      textSize(height / 10);
-      fill(255);
       if (board.gameOver()) {
-        if (turn != humanFirst) {
-          text("You Win!", 3 * width / 4, 3 * height / 4);
-          victory.play();
+        if (turn) {
+          bot1Wins++;
         } else {
-          text("You Lose!", 3 * width / 4, 3 * height / 4);
-          defeat.play();
+          bot2Wins++;
         }
         over = true;
       } else if (board.tieGame()) {
-        text("Tie Game!", 3 * width / 4, 3 * height / 4);
-        tie_game.play();
         over = true;
       } else {
         if (selected.getSelection()) {
-          if (turn != humanFirst) {
+          if (turn) {
             botMove();
           } else {
-            text("Human Move", 3 * width / 4, 3 * height / 4);
+            botMove();
           }
         } else {
-          if (turn != humanFirst) {
-            text("Human Select", 3 * width / 4, 3 * height / 4);
+          if (turn) {
+            botSelect();
           } else {
             botSelect();
           }
         }
+      }
+      textSize(height / 20);
+      fill(255);
+      textAlign(LEFT);
+      text("Bot Stats:", 11 * width / 20, 3 * height / 4);
+      text("Bot 1: " + bot1Wins, 11 * width / 20, 3 * height / 4 + height / 19);
+      text("Bot 2: " + bot2Wins, 11 * width / 20, 3 * height / 4 + 2 * height / 19);
+      text("Tie Games: " + botTie, 11 * width / 20, 3 * height / 4 + 3 * height / 19);
+      text("Game #" + botGames + "/" + gamesToPlay, 11 * width / 20, 3 * height / 4 + 4 * height / 19);
+    } else {
+      if (botGames < gamesToPlay) {
+        botGames++;
+        sim = new BotSimulation(gamesToPlay, 300, 0);
+      } else {
+        rectMode(CORNER);
+        textAlign(LEFT);
+        noStroke();
+        noFill();
+        frameRate(300);
+        menu = 0;
       }
     }
   }
@@ -130,7 +144,7 @@ class BotGame {
     }
     int cellToPlay = bestCells.get((int)random(bestCells.size()));
     board.play(selected, cellToPlay / board.grid[0].length, cellToPlay % board.grid[0].length);
-    piece_play[(int)random(piece_play.length)].play();
+    //piece_play[(int)random(piece_play.length)].play();
     selected.setSelection(false);
     for (int i = 0; i < pieces.length; i++) {
       if (pieces[i].equals(selected)) {
@@ -157,7 +171,6 @@ class BotGame {
     }
     int pieceToSelect = bestPieces.get((int)random(bestPieces.size()));
     selected = pieces[pieceToSelect].copyAttributes(selected.x, selected.y, selected.r);
-    piece_selected.play();
     selected.setSelection(true);
     pieces[pieceToSelect].setSelection(false);
   }

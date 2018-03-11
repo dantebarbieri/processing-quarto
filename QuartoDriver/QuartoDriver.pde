@@ -1,8 +1,9 @@
-int menu = 0;
-Button startMultiplayer, startBots, startTutorial, easyDiff, mediDiff, hardDiff, closeTutorial;
+int menu = 0, bot1Wins = 0, bot2Wins = 0, botTie = 0, botGames = 0;
+Button startMultiplayer, startBots, startBotSimulation, startTutorial, easyDiff, mediDiff, hardDiff, closeTutorial;
 
 MultiplayerGame mpg;
 BotGame bots;
+BotSimulation sim;
 
 SoundFile[] piece_play;
 SoundFile piece_selected, piece_deselected, piece_changed, victory, defeat, tie_game;
@@ -12,6 +13,7 @@ void setup() {
   loadResc();
   startMultiplayer = new Button("Play Multiplayer", new PVector(width / 4, height / 4), 100, #469928, #000000, #469928, #ffffff);
   startBots = new Button("Play Against a Bot", new PVector(width / 4, height / 3), 100, #469928, #000000, #469928, #ffffff);
+  startBotSimulation = new Button("Bot vs Bot", new PVector(width / 4, 5 * height / 12), 100, #469928, #000000, #469928, #ffffff);
   startTutorial = new Button("How to Play", new PVector(width / 4, height / 2), 100, #469928, #000000, #469928, #ffffff);
   easyDiff = new Button("Normal Bot", new PVector(width / 4, height / 4), 100, #469928, #000000, #469928, #ffffff);
   mediDiff = new Button("Hard Bot", new PVector(width / 4, height / 3), 100, #469928, #000000, #469928, #ffffff);
@@ -27,18 +29,21 @@ void draw() {
     } else if (menu == 2) {
       bots.process();
     } else if (menu == 3) {
+      sim.process();
+    } else if (menu == 4) {
       drawBotMenu();
     }
   }
 }
 
 void keyTyped() {
-  if (menu == 1 || menu == 2) {
+  if (menu == 1 || menu == 2 || menu == 3) {
     if (key == 'r' || key == 'R') {
       rectMode(CORNER);
       textAlign(LEFT);
       noStroke();
       noFill();
+      frameRate(300);
       menu = 0;
     }
   }
@@ -52,6 +57,10 @@ void mousePressed() {
       menu = 1;
     }
     if (startBots.clicked()) {
+      menu = 4;
+    }
+    if (startBotSimulation.clicked()) {
+      sim = new BotSimulation(1000, 300, 0);
       menu = 3;
     }
     break;
@@ -153,7 +162,7 @@ void mousePressed() {
       }
       break;
     }
-  case 3:
+  case 4:
     if (easyDiff.clicked()) {
       bots = random(1) > 0.5 ? new BotGame(true, 0) : new BotGame(false, 0);
       menu = 2;
@@ -192,6 +201,7 @@ void drawMenu() {
   background(0);
   startMultiplayer.show();
   startBots.show();
+  startBotSimulation.show();
   startTutorial.show();
 }
 
